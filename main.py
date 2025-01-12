@@ -12,13 +12,13 @@ from music.AudioManager import AudioManager
 # Load environment variables
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILD')
 
 # Verwende Bot anstelle von Client, um auf tree zugreifen zu können
 intents = Intents.default()
 Intents.message_content = True
 client = Bot(command_prefix="!", intents=intents)
 client.activity = discord.Activity(type=discord.ActivityType.watching, name="the 0 grow on the tree")
-guild_id = 701707921922326568
 
 audio_manager = AudioManager()
 
@@ -42,7 +42,7 @@ def get_commands():
             for name, obj in inspect.getmembers(module):
                 if inspect.isclass(obj):
                     if hasattr(obj, 'register_command'):
-                        command_instance = obj(client, guild_id, audio_manager)
+                        command_instance = obj(client, GUILD, audio_manager)
                         c.append(command_instance)
         except Exception as e:
             print(f"Failed to load module {module_name}: {e}")
@@ -60,7 +60,7 @@ async def on_ready():
 
 
 
-    await client.tree.sync(guild=Object(id=guild_id))
+    await client.tree.sync(guild=Object(id=GUILD))
     # Also sync the tree for all other guilds the bot is connected to but this is slower
     await client.tree.sync()
 

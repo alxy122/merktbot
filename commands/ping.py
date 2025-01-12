@@ -39,6 +39,6 @@ class PingCommand:
             :return:
             """
             ping = self.client.latency * 1000
-            await interaction.response.send_message(f"Pong! {ping:.2f}ms")  # noqa
+            await interaction.response.send_message(f"Pong! {ping:.2f}ms <:emoji_name:1328063105799950336>")  # noqa
 
         return command

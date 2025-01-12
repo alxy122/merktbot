@@ -16,7 +16,6 @@ class QueueCommand:
             description=self.description,
             guild=Object(id=self.guild_id)
         )
-        @app_commands.describe(url="The URL of the music to play.")
         async def command(interaction: Interaction):
             queue = self.audio_manager.get_queue()
             if not queue:
