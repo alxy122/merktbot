@@ -1,6 +1,7 @@
 from typing import Callable, Coroutine, Any
-from discord import Interaction, Object, app_commands
+from discord import Interaction, Object
 from discord.ext.commands import Bot
+
 
 class QueueCommand:
     def __init__(self, bot: Bot, guild_id: int, audio_manager, *args, **kwargs) -> None:  # noqa
