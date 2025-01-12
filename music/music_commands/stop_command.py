@@ -4,9 +4,9 @@ from discord.ext.commands import Bot
 from music.audio_manager import AudioManager
 
 
-class SkipCommand:
+class StopCommand:
     """
-    SkipCommand class is used to skip the current song.
+    StopCommand class is used to skip the current song.
 
     Attributes
     ----------

@@ -70,5 +70,5 @@ class SkipCommand:
             :type interaction: Interaction
             """
             self.audio_manager.skip()
-            await interaction.response.send_message(f"Skipped the current song.")  # noqa
+            await interaction.response.send_message("Skipped the current song.")  # noqa
         return command

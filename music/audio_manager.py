@@ -1,3 +1,4 @@
+import gc
 from typing import List
 from discord import FFmpegPCMAudio, VoiceClient
 import yt_dlp as youtube_dl
@@ -118,7 +119,6 @@ class AudioManager:
                 # Call play_next to continue the queue
                 self.play_next()
                 # Force garbage collection (optional)
-                import gc
                 gc.collect()
 
             self.voice_client.play(
