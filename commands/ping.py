@@ -22,7 +22,7 @@ class PingCommand:
     register_command()
         Register the specific command function within the bot's command tree.
     """
-    def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:  # noqa
+    def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:
         """
         Initialize the HelloCommand with the client and guild_id.
 
@@ -35,6 +35,11 @@ class PingCommand:
         self.name = "ping"
         self.description = "Pong!"
         self.guild_id = guild_id
+
+        assert len(args) == 0 and len(kwargs) == 0, "No additional arguments are allowed."
+
+    def __str__(self):
+        return f"PingCommand(name={self.name}, description={self.description}, guild_id={self.guild_id})"
 
     def register_command(self) -> Callable[[Interaction], Coroutine[Any, Any, None]]:
         """

@@ -23,7 +23,7 @@ class The1510Command:
     register_command()
         Register the specific command function within the bot's command tree.
     """
-    def __init__(self, client:Bot, guild_id:int, *args, **kwargs) -> None:  # noqa
+    def __init__(self, client:Bot, guild_id:int, *args, **kwargs) -> None:
         """
         Initialize the HelloCommand with the client and guild_id.
 
@@ -38,8 +38,17 @@ class The1510Command:
         self.description="When is the next 15:10?"
         self.guild_id=guild_id
 
-    def register_command(self) -> Callable[[Interaction], Coroutine[Any, Any, None]]:
+        assert len(args) == 0 and len(kwargs) == 0, "No additional arguments are allowed."
 
+    def __str__(self):
+        return f"The1510Command(name={self.name}, description={self.description}, guild_id={self.guild_id})"
+
+    def register_command(self) -> Callable[[Interaction], Coroutine[Any, Any, None]]:
+        """
+        Register the specific command function within the bot's command tree.
+        :return: The command function to be registered.
+        :rtype: Callable[[Interaction], Coroutine[Any, Any, None]]
+        """
         @self.client.tree.command(
             name=self.name,
             description=self.description,
