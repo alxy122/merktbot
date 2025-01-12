@@ -51,7 +51,7 @@ Follow these steps to set up and run the bot on your system:
 
 ## Usage
 1. Invite the bot to your server using the OAuth2 URL from the Discord Developer Portal.
-2. Join a voice channel and use the bot's music commands (e.g., `!play <YouTube URL>`).
+2. Join a voice channel and use the bot's music commands (e.g., `/play <YouTube URL>`).
 
 ## Configuration
 - **Environment Variables**:
