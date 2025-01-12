@@ -3,8 +3,40 @@ import discord
 from discord import Interaction, Object, app_commands
 from discord.ext.commands import Bot
 
+
 class PlayCommand:
+    """
+    A class to represent the PlayCommand.
+
+    Attributes
+    ----------
+    bot : Bot
+        The discord client object.
+    name : str
+        The name of the command.
+    description : str
+        The description of the command.
+    guild_id : int
+        The guild ID to register the command.
+    audio_manager
+        The audio manager object.
+
+    Methods
+    -------
+    register_command()
+        Register the play command.
+    """
     def __init__(self, bot: Bot, guild_id: int, audio_manager, *args, **kwargs) -> None:  # noqa
+        """
+        Initialize the PlayCommand with the client, guild_id, audio_manager, and other arguments.
+
+        :param bot: The discord client object.
+        :type bot: Bot
+        :param guild_id: The guild ID to register the command in.
+        :type guild_id: int
+        :param audio_manager: The audio manager object.
+        :type audio_manager: AudioManager
+        """
         self.bot = bot
         self.name = "play"
         self.description = "Plays a URL"
@@ -12,6 +44,11 @@ class PlayCommand:
         self.audio_manager = audio_manager
 
     def register_command(self) -> Callable[[Interaction, str], Coroutine[Any, Any, None]]:
+        """
+        Register the play command.
+        :return: The command function.
+        :rtype: Callable[[Interaction, str], Coroutine[Any, Any, None]]
+        """
         @self.bot.tree.command(
             name=self.name,
             description=self.description,
@@ -19,6 +56,13 @@ class PlayCommand:
         )
         @app_commands.describe(url="The URL of the music to play.")
         async def command(interaction: Interaction, url: str):
+            """
+            The command function.
+            :param interaction: The interaction object.
+            :type interaction: Interaction
+            :param url: The URL of the music to play.
+            :type url: str
+            """
             try:
                 voice_channel = interaction.user.voice.channel
                 if not voice_channel:

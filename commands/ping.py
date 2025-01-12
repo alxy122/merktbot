@@ -3,6 +3,25 @@ from discord import Interaction, Object
 from discord.ext.commands import Bot
 
 class PingCommand:
+    """
+    A class to represent the PingCommand.
+
+    Attributes
+    ----------
+    client : Bot
+        The discord client object.
+    name : str
+        The name of the command.
+    description : str
+        The description of the command.
+    guild_id : int
+        The guild ID to register the command
+
+    Methods
+    -------
+    register_command()
+        Register the specific command function within the bot's command tree.
+    """
     def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:  # noqa
         """
         Initialize the HelloCommand with the client and guild_id.
@@ -12,7 +31,6 @@ class PingCommand:
         :param guild_id: The guild ID to register the command in.
         :type guild_id: int
         """
-
         self.client = client
         self.name = "ping"
         self.description = "Pong!"
@@ -39,6 +57,7 @@ class PingCommand:
             :return:
             """
             ping = self.client.latency * 1000
-            await interaction.response.send_message(f"Pong! {ping:.2f}ms <:emoji_name:1328063105799950336>")  # noqa
+            await interaction.response.send_message(  # noqa
+                f"Pong! {ping:.2f}ms <:emoji_name:1328063105799950336>")
 
         return command

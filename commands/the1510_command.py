@@ -4,6 +4,25 @@ from discord import Interaction, Object
 from discord.ext.commands import Bot
 
 class The1510Command:
+    """
+    A class to represent the 1510Command.
+
+    Attributes
+    ----------
+    client : Bot
+        The discord client object.
+    name : str
+        The name of the command.
+    description : str
+        The description of the command.
+    guild_id : int
+        The guild ID to register the command.
+
+    Methods
+    -------
+    register_command()
+        Register the specific command function within the bot's command tree.
+    """
     def __init__(self, client:Bot, guild_id:int, *args, **kwargs) -> None:  # noqa
         """
         Initialize the HelloCommand with the client and guild_id.
@@ -47,4 +66,3 @@ class The1510Command:
             await interaction.response.send_message(message)  # noqa
 
         return command
-

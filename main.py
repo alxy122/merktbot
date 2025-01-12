@@ -1,3 +1,4 @@
+from typing import List, Protocol
 import importlib
 import inspect
 import os
@@ -6,8 +7,22 @@ from discord import Intents, Object
 from discord.ext.commands import Bot
 from dotenv import load_dotenv
 import discord
-
 from music.AudioManager import AudioManager
+
+class CommandProtocol(Protocol):
+    """
+    A protocol to represent a command.
+
+    Methods
+    -------
+    register_command()
+        Register the specific command function within the bot's command tree.
+    """
+    def register_command(self) -> None:
+        """
+        Register the specific command function within the bot's command tree.
+        """
+        ...
 
 # Load environment variables
 load_dotenv()
@@ -18,12 +33,19 @@ GUILD = os.getenv('DISCORD_GUILD')
 intents = Intents.default()
 Intents.message_content = True
 client = Bot(command_prefix="!", intents=intents)
-client.activity = discord.Activity(type=discord.ActivityType.watching, name="the 0 grow on the tree")
-
+client.activity = discord.Activity(
+    type=discord.ActivityType.watching,
+    name="the 0 grow on the tree")
 audio_manager = AudioManager()
 
-
-def get_commands(folder):
+def get_commands(folder:str) -> List[CommandProtocol]:
+    """
+    This function dynamically loads all command modules from the specified folder.
+    :param folder: The folder to load the command modules from.
+    :type folder: str
+    :return: A list of command instances.
+    :rtype: List[object]
+    """
     # Dynamically load all command modules from the 'commands' directory
     commands_folder = pathlib.Path(__file__).parent / folder
     c = []
@@ -39,16 +61,19 @@ def get_commands(folder):
             module = importlib.import_module(module_name)
 
             # Look for classes that inherit from BaseCommand or are instances of MusicCommand
-            for name, obj in inspect.getmembers(module):
+            for _, obj in inspect.getmembers(module):
                 if inspect.isclass(obj):
                     if hasattr(obj, 'register_command'):
                         command_instance = obj(client, GUILD, audio_manager)
                         c.append(command_instance)
+        except ModuleNotFoundError:
+            print(f"Failed to load module {module_name}: ModuleNotFoundError")
+        except AttributeError:
+            print(f"Failed to load module {module_name}: AttributeError")
         except Exception as e:
             print(f"Failed to load module {module_name}: {e}")
 
     return c
-
 
 @client.event
 async def on_ready():
@@ -56,11 +81,9 @@ async def on_ready():
         print(f"Connected to guild: {guild.name}, Guild ID: {guild.id}")
 
     for command in get_commands("commands"):
-        print(f"Registering command {command.name}")
         command.register_command()
 
     for command in get_commands("music/music_commands"):
-        print(f"Registering command {command.name}")
         command.register_command()
 
 
