@@ -3,6 +3,9 @@ from typing import Callable, Coroutine, Any
 from discord import Interaction, Object
 from discord.ext.commands import Bot
 
+from music.audio_manager import AudioManager
+
+
 class The1510Command:
     """
     A class to represent the 1510Command.
@@ -23,7 +26,8 @@ class The1510Command:
     register_command()
         Register the specific command function within the bot's command tree.
     """
-    def __init__(self, client:Bot, guild_id:int, *args, **kwargs) -> None:
+
+    def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:
         """
         Initialize the HelloCommand with the client and guild_id.
 
@@ -34,11 +38,12 @@ class The1510Command:
         """
 
         self.client = client
-        self.name="1510"
-        self.description="When is the next 15:10?"
-        self.guild_id=guild_id
+        self.name = "1510"
+        self.description = "When is the next 15:10?"
+        self.guild_id = guild_id
 
-        assert len(args) == 0 and len(kwargs) == 0, "No additional arguments are allowed."
+        assert len(args) == 1 and isinstance(args[0], AudioManager), "Only one argument is allowed."
+        assert len(kwargs) == 0, "No keyword arguments are allowed."
 
     def __str__(self):
         return (f"The1510Command(name={self.name}, "
@@ -51,6 +56,7 @@ class The1510Command:
         :return: The command function to be registered.
         :rtype: Callable[[Interaction], Coroutine[Any, Any, None]]
         """
+
         @self.client.tree.command(
             name=self.name,
             description=self.description,

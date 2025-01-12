@@ -1,6 +1,8 @@
 """
-This module is the main entry point for the Discord bot. It loads all command modules from the 'commands' directory and
-registers them with the bot. The bot is then started and listens for incoming messages.
+This module is the main entry point for the Discord bot.
+It loads all command modules from the 'commands' directory and
+registers them with the bot.
+The bot is then started and listens for incoming messages.
 
 Attributes
 ----------
@@ -34,6 +36,10 @@ from dotenv import load_dotenv
 import discord
 from music.audio_manager import AudioManager
 
+load_dotenv()
+TOKEN = os.getenv('DISCORD_TOKEN')
+GUILD = os.getenv('DISCORD_GUILD')
+
 
 class CommandProtocol(Protocol):
     """
@@ -50,23 +56,13 @@ class CommandProtocol(Protocol):
         """
         ...
 
-# Load environment variables
-load_dotenv()
-TOKEN = os.getenv('DISCORD_TOKEN')
-GUILD = os.getenv('DISCORD_GUILD')
-
-# Verwende Bot anstelle von Client, um auf tree zugreifen zu können
-intents = Intents.default()
-Intents.message_content = True
-client = Bot(command_prefix="!", intents=intents)
-client.activity = discord.Activity(
-    type=discord.ActivityType.watching,
-    name="the 0 grow on the tree")
-audio_manager = AudioManager()
-
-def get_commands(folder:str) -> List[CommandProtocol]:
+def get_commands(client:Bot, audio_manager:AudioManager, folder:str) -> List[CommandProtocol]:
     """
     This function dynamically loads all command modules from the specified folder.
+    :param audio_manager:
+    :type audio_manager: AudioManager
+    :param client: The discord client object.
+    :type client: Bot
     :param folder: The folder to load the command modules from.
     :type folder: str
     :return: A list of command instances.
@@ -101,6 +97,15 @@ def get_commands(folder:str) -> List[CommandProtocol]:
 
     return c
 
+intents = Intents.default()
+Intents.message_content = True
+client = Bot(command_prefix="!", intents=intents)
+client.activity = discord.Activity(
+    type=discord.ActivityType.watching,
+    name="the 0 grow on the tree")
+audio_manager = AudioManager()
+
+
 @client.event
 async def on_ready() -> None:
     """
@@ -109,12 +114,11 @@ async def on_ready() -> None:
     for guild in client.guilds:
         print(f"Connected to guild: {guild.name}, Guild ID: {guild.id}")
 
-    for command in get_commands("commands"):
+    for command in get_commands(client=client, audio_manager=audio_manager, folder="commands"):
         command.register_command()
 
-    for command in get_commands("music/music_commands"):
+    for command in get_commands(client=client, audio_manager=audio_manager, folder="music/music_commands"):
         command.register_command()
-
 
     await client.tree.sync(guild=Object(id=GUILD))
     # Also sync the tree for all other guilds the bot is connected to but this is slower
@@ -122,4 +126,15 @@ async def on_ready() -> None:
 
     print("Ready!")
 
-client.run(TOKEN)
+def main():
+    """
+    This function is the main entry point for the Discord bot.
+    """
+    client.run(TOKEN)
+
+if __name__ == "__main__":
+    main()
+
+
+
+

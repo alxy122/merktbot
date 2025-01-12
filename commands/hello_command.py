@@ -2,6 +2,8 @@ from typing import Callable, Coroutine
 from discord import Interaction, Object
 from discord.ext.commands import Bot
 
+from music.audio_manager import AudioManager
+
 
 class HelloCommand:
     """
@@ -41,7 +43,8 @@ class HelloCommand:
         self.description = "Say hello!"
         self.guild_id = guild_id
 
-        assert len(args) == 0 and len(kwargs) == 0, "No additional arguments are allowed."
+        assert len(args) == 1 and isinstance(args[0], AudioManager), "Only one argument is allowed."
+        assert len(kwargs) == 0, "No keyword arguments are allowed."
 
     def __str__(self):
         return (f"HelloCommand(name={self.name}, "
