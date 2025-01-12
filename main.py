@@ -56,13 +56,13 @@ class CommandProtocol(Protocol):
         """
         ...
 
-def get_commands(client:Bot, audio_manager:AudioManager, folder:str) -> List[CommandProtocol]:
+def get_commands(_client:Bot, _audio_manager:AudioManager, folder:str) -> List[CommandProtocol]:
     """
     This function dynamically loads all command modules from the specified folder.
-    :param audio_manager:
-    :type audio_manager: AudioManager
-    :param client: The discord client object.
-    :type client: Bot
+    :param _audio_manager:
+    :type _audio_manager: AudioManager
+    :param _client: The discord client object.
+    :type _client: Bot
     :param folder: The folder to load the command modules from.
     :type folder: str
     :return: A list of command instances.
@@ -86,7 +86,7 @@ def get_commands(client:Bot, audio_manager:AudioManager, folder:str) -> List[Com
             for _, obj in inspect.getmembers(module):
                 if inspect.isclass(obj):
                     if hasattr(obj, 'register_command'):
-                        command_instance = obj(client, GUILD, audio_manager)
+                        command_instance = obj(_client, GUILD, _audio_manager)
                         c.append(command_instance)
         except ModuleNotFoundError:
             print(f"Failed to load module {module_name}: ModuleNotFoundError")
@@ -114,10 +114,10 @@ async def on_ready() -> None:
     for guild in client.guilds:
         print(f"Connected to guild: {guild.name}, Guild ID: {guild.id}")
 
-    for command in get_commands(client=client, audio_manager=audio_manager, folder="commands"):
+    for command in get_commands(_client=client, _audio_manager=audio_manager, folder="commands"):
         command.register_command()
 
-    for command in get_commands(client=client, audio_manager=audio_manager, folder="music/music_commands"):
+    for command in get_commands(_client=client, _audio_manager=audio_manager, folder="music/music_commands"):
         command.register_command()
 
     await client.tree.sync(guild=Object(id=GUILD))
@@ -134,7 +134,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-

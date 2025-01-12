@@ -76,7 +76,8 @@ class PlayCommand:
             try:
                 voice_channel = interaction.user.voice.channel
                 if not voice_channel:
-                    await interaction.response.send_message("You are not connected to a voice channel.")  # noqa
+                    await interaction.response.send_message(
+                        "You are not connected to a voice channel.")  # noqa
                     return
 
                 voice_client = discord.utils.get(self.bot.voice_clients, guild=interaction.guild)
@@ -87,7 +88,9 @@ class PlayCommand:
                 self.audio_manager.add_to_queue(url)
                 await interaction.response.send_message(f"Added {url} to the queue.")  # noqa
             except discord.errors.NotFound:
-                await interaction.followup.send(f"Sorry, the interaction has timed out. Could not add {url} to the queue.")
+                await interaction.followup.send(
+                    f"Sorry, the interaction has timed out. "
+                    f"Could not add {url} to the queue.")
             except Exception as e:
                 await interaction.followup.send(f"An error occurred: {e}")
 

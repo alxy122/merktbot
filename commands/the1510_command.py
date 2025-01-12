@@ -77,7 +77,8 @@ class The1510Command:
                 message = ("It's 15:10!\n"
                            "https://www.youtube.com/watch?v=FJdtXvW78os")
             else:
-                message = (f"Time until next 15:10: {hours} hours, {minutes} minutes, and {seconds} seconds\n"
+                message = (f"Time until next 15:10: {hours} hours, "
+                           f"{minutes} minutes, and {seconds} seconds\n"
                            f"But be prepared\n"
                            f"https://www.youtube.com/watch?v=FJdtXvW78os")
             await interaction.response.send_message(message)  # noqa
