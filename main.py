@@ -23,9 +23,9 @@ client.activity = discord.Activity(type=discord.ActivityType.watching, name="the
 audio_manager = AudioManager()
 
 
-def get_commands():
+def get_commands(folder):
     # Dynamically load all command modules from the 'commands' directory
-    commands_folder = pathlib.Path(__file__).parent / "commands"
+    commands_folder = pathlib.Path(__file__).parent / folder
     c = []
 
     # Ensure the commands directory exists
@@ -33,7 +33,7 @@ def get_commands():
         return c
 
     for command_file in commands_folder.glob("*.py"):
-        module_name = f"commands.{command_file.stem}"
+        module_name = f"{folder.replace('/', '.')}.{command_file.stem}"
         try:
             # Dynamically import the module
             module = importlib.import_module(module_name)
@@ -55,9 +55,13 @@ async def on_ready():
     for guild in client.guilds:
         print(f"Connected to guild: {guild.name}, Guild ID: {guild.id}")
 
-    for command in get_commands():
+    for command in get_commands("commands"):
+        print(f"Registering command {command.name}")
         command.register_command()
 
+    for command in get_commands("music/music_commands"):
+        print(f"Registering command {command.name}")
+        command.register_command()
 
 
     await client.tree.sync(guild=Object(id=GUILD))

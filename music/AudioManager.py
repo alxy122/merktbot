@@ -23,11 +23,13 @@ class AudioManager:
 
     def stop(self):
         self.queue = []
-        if self.voice_client.is_playing():
-            self.voice_client.stop()
+        if self.voice_client and self.voice_client.is_connected():
+            self.voice_client.disconnect()
 
     def skip(self):
         """Skip the current song and play the next one in the queue."""
+        if not self.voice_client:
+            return
         if self.voice_client.is_playing():
             self.voice_client.stop()  # Stop the current song
         self.play_next()  # Start the next song in the queue

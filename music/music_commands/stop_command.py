@@ -18,6 +18,7 @@ class SkipCommand:
             guild=Object(id=self.guild_id)
         )
         async def command(interaction: Interaction):
+            if self.audio_manager.
             self.audio_manager.stop()
             await interaction.response.send_message(f"Stopped the player.")  # noqa
         return command
