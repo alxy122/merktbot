@@ -100,6 +100,4 @@ class PlayCommand:
                 await interaction.followup.send(f"A client error occurred: {e}")
             except discord.errors.HTTPException as e:
                 await interaction.followup.send(f"An HTTP error occurred: {e}")
-            except Exception as e:
-                await interaction.followup.send(f"An unexpected error occurred: {e}")
         return command

@@ -50,6 +50,8 @@ class CommandProtocol(Protocol):
     register_command()
         Register the specific command function within the bot's command tree.
     """
+
+    # pylint: disable=R0903
     def register_command(self) -> None:
         """
         Register the specific command function within the bot's command tree.
@@ -140,7 +142,6 @@ def dummy_for_pylint():
     0903: Too few public methods (1/2) (too-few-public-methods)
     error from pylint.
     """
-    pass
 
 if __name__ == "__main__":
     main()
