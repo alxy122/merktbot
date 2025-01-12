@@ -1,9 +1,36 @@
+"""
+This module contains the PingCommand class, which represents a command
+that responds with 'Pong!' in a Discord bot.
+"""
+
 from typing import Callable, Coroutine, Any
 from discord import Interaction, Object
 from discord.ext.commands import Bot
 
+from music.audio_manager import AudioManager
+
+
 class PingCommand:
-    def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:  # noqa
+    """
+    A class to represent the PingCommand.
+
+    Attributes
+    ----------
+    client : Bot
+        The discord client object.
+    name : str
+        The name of the command.
+    description : str
+        The description of the command.
+    guild_id : int
+        The guild ID to register the command
+
+    Methods
+    -------
+    register_command()
+        Register the specific command function within the bot's command tree.
+    """
+    def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:
         """
         Initialize the HelloCommand with the client and guild_id.
 
@@ -12,11 +39,18 @@ class PingCommand:
         :param guild_id: The guild ID to register the command in.
         :type guild_id: int
         """
-
         self.client = client
         self.name = "ping"
         self.description = "Pong!"
         self.guild_id = guild_id
+
+        assert len(args) == 1 and isinstance(args[0], AudioManager), "Only one argument is allowed."
+        assert len(kwargs) == 0, "No keyword arguments are allowed."
+
+    def __str__(self):
+        return (f"PingCommand(name={self.name}, "
+                f"description={self.description}, "
+                f"guild_id={self.guild_id})")
 
     def register_command(self) -> Callable[[Interaction], Coroutine[Any, Any, None]]:
         """
@@ -39,6 +73,7 @@ class PingCommand:
             :return:
             """
             ping = self.client.latency * 1000
-            await interaction.response.send_message(f"Pong! {ping:.2f}ms <:emoji_name:1328063105799950336>")  # noqa
+            await interaction.response.send_message(  # noqa
+                f"Pong! {ping:.2f}ms <:emoji_name:1328063105799950336>")
 
         return command

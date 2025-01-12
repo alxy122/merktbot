@@ -1,9 +1,39 @@
+"""
+This module contains the HelloCommand class, which represents a command
+that says hello in a Discord bot.
+"""
+
 from typing import Callable, Coroutine
 from discord import Interaction, Object
 from discord.ext.commands import Bot
 
+from music.audio_manager import AudioManager
+
+
 class HelloCommand:
-    def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:  # noqa
+    """
+    A class to represent the HelloCommand.
+
+    Attributes
+    ----------
+    client : Bot
+        The discord client object.
+    name : str
+        The name of the command.
+    description : str
+        The description of the command.
+    guild_id : int
+        The guild ID to register the
+        command
+
+    Methods
+    -------
+    register_command()
+        Register the hello command.
+
+    """
+
+    def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:
         """
         Initialize the HelloCommand with the client and guild_id.
 
@@ -18,13 +48,33 @@ class HelloCommand:
         self.description = "Say hello!"
         self.guild_id = guild_id
 
+        assert len(args) == 1 and isinstance(args[0], AudioManager), "Only one argument is allowed."
+        assert len(kwargs) == 0, "No keyword arguments are allowed."
+
+    def __str__(self):
+        return (f"HelloCommand(name={self.name}, "
+                f"description={self.description}, "
+                f"guild_id={self.guild_id})")
+
     def register_command(self) -> Callable[[Interaction], Coroutine[None, None, None]]:
+        """
+        Register the hello command.
+
+        :return: The command function.
+        :rtype: Callable[[Interaction], Coroutine[None, None, None]]
+        """
+
         @self.client.tree.command(
             name=self.name,
             description=self.description,
             guild=Object(id=self.guild_id)
         )
         async def command(interaction: Interaction):
+            """
+            The command function.
+            :param interaction:
+            :type interaction: Interaction
+            """
             await interaction.response.send_message("Hello!")  # noqa
 
         return command

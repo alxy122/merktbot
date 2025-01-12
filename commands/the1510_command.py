@@ -1,10 +1,38 @@
+"""
+This module contains the The1510Command class, which represents a command
+that tells when the next 15:10 is in a Discord bot.
+"""
+
 import datetime
 from typing import Callable, Coroutine, Any
 from discord import Interaction, Object
 from discord.ext.commands import Bot
 
+from music.audio_manager import AudioManager
+
+
 class The1510Command:
-    def __init__(self, client:Bot, guild_id:int, *args, **kwargs) -> None:  # noqa
+    """
+    A class to represent the 1510Command.
+
+    Attributes
+    ----------
+    client : Bot
+        The discord client object.
+    name : str
+        The name of the command.
+    description : str
+        The description of the command.
+    guild_id : int
+        The guild ID to register the command.
+
+    Methods
+    -------
+    register_command()
+        Register the specific command function within the bot's command tree.
+    """
+
+    def __init__(self, client: Bot, guild_id: int, *args, **kwargs) -> None:
         """
         Initialize the HelloCommand with the client and guild_id.
 
@@ -15,11 +43,24 @@ class The1510Command:
         """
 
         self.client = client
-        self.name="1510"
-        self.description="When is the next 15:10?"
-        self.guild_id=guild_id
+        self.name = "1510"
+        self.description = "When is the next 15:10?"
+        self.guild_id = guild_id
+
+        assert len(args) == 1 and isinstance(args[0], AudioManager), "Only one argument is allowed."
+        assert len(kwargs) == 0, "No keyword arguments are allowed."
+
+    def __str__(self):
+        return (f"The1510Command(name={self.name}, "
+                f"description={self.description}, "
+                f"guild_id={self.guild_id})")
 
     def register_command(self) -> Callable[[Interaction], Coroutine[Any, Any, None]]:
+        """
+        Register the specific command function within the bot's command tree.
+        :return: The command function to be registered.
+        :rtype: Callable[[Interaction], Coroutine[Any, Any, None]]
+        """
 
         @self.client.tree.command(
             name=self.name,
@@ -41,10 +82,10 @@ class The1510Command:
                 message = ("It's 15:10!\n"
                            "https://www.youtube.com/watch?v=FJdtXvW78os")
             else:
-                message = (f"Time until next 15:10: {hours} hours, {minutes} minutes, and {seconds} seconds\n"
+                message = (f"Time until next 15:10: {hours} hours, "
+                           f"{minutes} minutes, and {seconds} seconds\n"
                            f"But be prepared\n"
                            f"https://www.youtube.com/watch?v=FJdtXvW78os")
             await interaction.response.send_message(message)  # noqa
 
         return command
-
