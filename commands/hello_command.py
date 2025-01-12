@@ -1,3 +1,8 @@
+"""
+This module contains the HelloCommand class, which represents a command
+that says hello in a Discord bot.
+"""
+
 from typing import Callable, Coroutine
 from discord import Interaction, Object
 from discord.ext.commands import Bot

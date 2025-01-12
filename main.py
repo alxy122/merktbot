@@ -54,8 +54,7 @@ class CommandProtocol(Protocol):
         """
         Register the specific command function within the bot's command tree.
         """
-        ...
-
+    pass
 def get_commands(_client:Bot, _audio_manager:AudioManager, folder:str) -> List[CommandProtocol]:
     """
     This function dynamically loads all command modules from the specified folder.
@@ -92,9 +91,8 @@ def get_commands(_client:Bot, _audio_manager:AudioManager, folder:str) -> List[C
             print(f"Failed to load module {module_name}: ModuleNotFoundError")
         except AttributeError:
             print(f"Failed to load module {module_name}: AttributeError")
-        except Exception as e:
+        except (TypeError, ValueError) as e:
             print(f"Failed to load module {module_name}: {e}")
-
     return c
 
 intents = Intents.default()

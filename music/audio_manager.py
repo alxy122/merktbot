@@ -1,3 +1,8 @@
+"""
+This module contains the AudioManager class, which manages the audio playback
+in a Discord bot's voice channel.
+"""
+
 import gc
 from typing import List
 from discord import FFmpegPCMAudio, VoiceClient

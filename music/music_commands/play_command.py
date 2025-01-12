@@ -1,3 +1,8 @@
+"""
+This module contains the PlayCommand class, which represents a command
+that plays a URL in a Discord bot.
+"""
+
 from typing import Callable, Coroutine, Any
 import discord
 from discord import Interaction, Object, app_commands

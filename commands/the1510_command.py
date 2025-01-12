@@ -1,3 +1,8 @@
+"""
+This module contains the The1510Command class, which represents a command
+that tells when the next 15:10 is in a Discord bot.
+"""
+
 import datetime
 from typing import Callable, Coroutine, Any
 from discord import Interaction, Object

@@ -1,3 +1,8 @@
+"""
+This module contains the SkipCommand class, which represents a command
+that skips the current song in a Discord bot.
+"""
+
 from typing import Callable, Coroutine, Any
 from discord import Interaction, Object
 from discord.ext.commands import Bot
