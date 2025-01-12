@@ -1,3 +1,28 @@
+"""
+This module is the main entry point for the Discord bot. It loads all command modules from the 'commands' directory and
+registers them with the bot. The bot is then started and listens for incoming messages.
+
+Attributes
+----------
+client : Bot
+    The discord client object.
+TOKEN : str
+    The Discord bot token.
+GUILD : str
+    The Discord guild ID.
+intents : Intents
+    The Discord intents object.
+audio_manager : AudioManager
+    The audio manager object.
+
+Methods
+-------
+get_commands(folder:str) -> List[CommandProtocol]
+    This function dynamically loads all command modules from the specified folder.
+on_ready()
+    This function is called when the bot is ready.
+"""
+
 from typing import List, Protocol
 import importlib
 import inspect
@@ -7,7 +32,8 @@ from discord import Intents, Object
 from discord.ext.commands import Bot
 from dotenv import load_dotenv
 import discord
-from music.AudioManager import AudioManager
+from music.audio_manager import AudioManager
+
 
 class CommandProtocol(Protocol):
     """
@@ -76,7 +102,10 @@ def get_commands(folder:str) -> List[CommandProtocol]:
     return c
 
 @client.event
-async def on_ready():
+async def on_ready() -> None:
+    """
+    This function is called when the bot is ready.
+    """
     for guild in client.guilds:
         print(f"Connected to guild: {guild.name}, Guild ID: {guild.id}")
 

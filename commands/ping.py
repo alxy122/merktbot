@@ -39,7 +39,9 @@ class PingCommand:
         assert len(args) == 0 and len(kwargs) == 0, "No additional arguments are allowed."
 
     def __str__(self):
-        return f"PingCommand(name={self.name}, description={self.description}, guild_id={self.guild_id})"
+        return (f"PingCommand(name={self.name}, "
+                f"description={self.description}, "
+                f"guild_id={self.guild_id})")
 
     def register_command(self) -> Callable[[Interaction], Coroutine[Any, Any, None]]:
         """

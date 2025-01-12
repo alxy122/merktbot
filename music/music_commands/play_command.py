@@ -26,7 +26,10 @@ class PlayCommand:
     register_command()
         Register the play command.
     """
-    def __init__(self, bot: Bot, guild_id: int, audio_manager, *args, **kwargs) -> None:
+    def __init__(self, bot: Bot,
+                 guild_id: int,
+                 audio_manager,
+                 *args, **kwargs) -> None:
         """
         Initialize the PlayCommand with the client, guild_id, audio_manager, and other arguments.
 
@@ -46,7 +49,9 @@ class PlayCommand:
         assert len(args) == 0 and len(kwargs) == 0, "No additional arguments are allowed."
 
     def __str__(self):
-        return f"PlayCommand(name={self.name}, description={self.description}, guild_id={self.guild_id})"
+        return (f"PlayCommand(name={self.name}, "
+                f"description={self.description}, "
+                f"guild_id={self.guild_id})")
 
     def register_command(self) -> Callable[[Interaction, str], Coroutine[Any, Any, None]]:
         """

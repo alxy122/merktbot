@@ -1,7 +1,7 @@
 from typing import Callable, Coroutine, Any
 from discord import Interaction, Object
 from discord.ext.commands import Bot
-from music.AudioManager import AudioManager
+from music.audio_manager import AudioManager
 
 
 class SkipCommand:
@@ -26,7 +26,10 @@ class SkipCommand:
     register_command() -> Callable[[Interaction], Coroutine[Any, Any, None]]:
         Register the skip command.
     """
-    def __init__(self, bot: Bot, guild_id: int, audio_manager:AudioManager, *args, **kwargs) -> None:
+    def __init__(self, bot: Bot,
+                 guild_id: int,
+                 audio_manager:AudioManager,
+                 *args, **kwargs) -> None:
         """
         Constructs all the necessary attributes for the skip command object.
         :param bot: The discord bot object.
@@ -45,7 +48,9 @@ class SkipCommand:
         assert len(args) == 0 and len(kwargs) == 0, "No additional arguments are allowed."
 
     def __str__(self):
-        return f"SkipCommand(name={self.name}, description={self.description}, guild_id={self.guild_id})"
+        return (f"SkipCommand(name={self.name}, "
+                f"description={self.description}, "
+                f"guild_id={self.guild_id})")
 
     def register_command(self) -> Callable[[Interaction], Coroutine[Any, Any, None]]:
         """
@@ -65,5 +70,5 @@ class SkipCommand:
             :type interaction: Interaction
             """
             self.audio_manager.stop()
-            await interaction.response.send_message(f"Stopped the player.")  # noqa
+            await interaction.response.send_message("Stopped the player.")  # noqa
         return command
