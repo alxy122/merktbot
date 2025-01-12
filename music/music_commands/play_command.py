@@ -96,7 +96,10 @@ class PlayCommand:
                 await interaction.followup.send(
                     f"Sorry, the interaction has timed out. "
                     f"Could not add {url} to the queue.")
+            except discord.errors.ClientException as e:
+                await interaction.followup.send(f"A client error occurred: {e}")
+            except discord.errors.HTTPException as e:
+                await interaction.followup.send(f"An HTTP error occurred: {e}")
             except Exception as e:
-                await interaction.followup.send(f"An error occurred: {e}")
-
+                await interaction.followup.send(f"An unexpected error occurred: {e}")
         return command
