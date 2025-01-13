@@ -7,6 +7,7 @@ import gc
 from typing import List
 from discord import FFmpegPCMAudio, VoiceClient
 import yt_dlp as youtube_dl
+from yt_dlp.utils import UnavailableVideoError, DownloadError
 
 
 class AudioManager:
@@ -54,6 +55,9 @@ class AudioManager:
         :type url: str
         :return:
         """
+        if not self.voice_client:
+            return
+
         self.queue.append(url)
         if not self.voice_client.is_playing():
             self.play_next()
@@ -112,7 +116,20 @@ class AudioManager:
             'quiet': True
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(url, download=False)
+            try:
+                info = ydl.extract_info(url, download=False)
+            except DownloadError as e:
+                print(f"Failed to download: {e}")
+                self.play_next()
+                return
+            except UnavailableVideoError as e:
+                print(f"Video is unavailable: {e}")
+                self.play_next()
+                return
+            except Exception as e:
+                print(f"Failed to extract info: {e}", type(e))
+                self.play_next()
+                return
             audio_url = info['url']
             ffmpeg_options = {
                 'options': '-vn'
